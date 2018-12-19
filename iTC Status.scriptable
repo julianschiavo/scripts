@@ -1,0 +1,12 @@
+{
+  "always_run_in_app" : false,
+  "icon" : {
+    "color" : "orange",
+    "glyph" : "id-badge"
+  },
+  "name" : "iTC Status",
+  "script" : "\/\/ Checks if apple has released sales reports\n\/\/ for today. This script works\n\/\/ well when when triggered from a Siri\n\/\/ Shortcut. You can configure a Siri\n\/\/ Shortcut from the script settings.\n\nvar good = [\"Yup\",\"Sure did\",\"Yes\",\"Looks like it\",\"Yep\",\"Correct\",\"It is certain\",\"It is decidedly so\",\"Without a doubt\",\"As I see it, yes\"]\nvar bad = [\"Nope\",\"Not yet\",\"No\",\"Ask again later\",\"No... Concentrate and ask again\",\"My reply is no\",\"My sources say no\"]\n\nvar selectGood = good[Math.floor(Math.random()*good.length)];\nvar selectBad = bad[Math.floor(Math.random()*bad.length)];\n\nvar date = new Date()\ndate.setDate(date.getDate() - 1)\n\nvar months = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')\nvar curMonth = months[date.getMonth()] + \".\"\nvar curDay = ((date.getDate() < 10) ? '0' : '') + date.getDate()\n\nvar weekday = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')\nvar dayOfWeek = weekday[date.getDay()]\n\nvar key = dayOfWeek + \" \" + curMonth + \" \" + curDay\nlog(key)\n\nlet url = \"https:\/\/appfigures.com\/itcstatus\/rss\"\nlet r = new Request(url)\nlet body = await r.loadString()\n\n\/\/ Use the global variable \"config\" to check\n\/\/ if the app is run from Siri before we\n\/\/ speak a text.\nif (config.runsWithSiri) {\n  if (body.includes(key)) {\n    Speech.speak(selectGood)\n    log(selectGood)\n  } else {\n    log(selectBad)\n    Speech.speak(selectBad)\n  }\n}\n\nif (config.runsInNotification) {\n  let view = new WebView()\n  await view.loadURL(\"https:\/\/appfigures.com\/store-status\/app-store-connect\")\n  view.present()\n} else {\n  Safari.openInApp(\"https:\/\/appfigures.com\/store-status\/app-store-connect\")\n}",
+  "share_sheet_inputs" : [
+
+  ]
+}
