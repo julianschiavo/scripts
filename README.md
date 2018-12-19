@@ -1,2 +1,3 @@
-# scripts
-A collection of Scriptable.app scripts I've made.
+# [Click here](https://scriptable.carrd.co)
+
+[App Store Connect Report Status](App Store Connect Report Status.scriptable)
